@@ -207,7 +207,7 @@ void *mainThread(void *arg0)
     while (1)
     {
 
-
+        /* S */
         /* Initial SM state */
         BL_State = BL_SMStart;
         for (unsigned int i = 0; i <= 6; i++) {
@@ -219,7 +219,7 @@ void *mainThread(void *arg0)
         }
 
 
-
+        /* O */
         /* Initial SM state */
         BL_State = BL_LedOn;
         for (unsigned int j = 0; j <= 10; j++) {
@@ -229,6 +229,25 @@ void *mainThread(void *arg0)
             while (!TimerFlag){}
             TimerFlag = 0;
         }
+
+        /* S */
+        /* Initial SM state */
+        BL_State = BL_SMStart;
+        for (unsigned int i = 0; i <= 6; i++) {
+            TickFct_Blink(1, CONFIG_GPIO_LED_0);
+
+            /* Wait 500 ms */
+            while (!TimerFlag){}
+            TimerFlag = 0;
+        }
+
+        /* Pause 3500 ms */
+        for (unsigned int i = 0; i <= 6; i++) {
+            /* Wait 500 ms */
+            while (!TimerFlag){}
+            TimerFlag = 0;
+        }
+
 
 
 
