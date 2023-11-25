@@ -42,6 +42,44 @@
 /* Driver configuration */
 #include "ti_drivers_config.h"
 
+/* Timer configuration */
+#include <ti/drivers/Timer.h>
+
+/* Timer callback function */
+void timerCallback(Timer_Handle myHandle, int_fast16_t status)
+{
+
+}
+
+/* Initialize Timer */
+void initTimer(void)
+{
+    Timer_Handle timer0;
+    Timer_Params params;
+
+    /* Initialize timer and set parameters */
+    Timer_init();
+    Timer_Params_init(&params);
+    params.period = 1000000;
+    params.periodUnits = Timer_PERIOD_US;
+    params.timerMode = Timer_CONTINUOUS_CALLBACK;
+    params.timerCallback = timerCallback;
+
+    timer0 = Timer_open(CONFIG_TIMER_0, &params);
+
+    if (timer0 == NULL)
+    {
+        /* Failed to initialize timer */
+        while(1) {}
+    }
+
+    if (Timer_start(timer0) == Timer_STATUS_ERROR)
+    {
+        /* Failed to start timer */
+        while(1) {}
+    }
+}
+
 /*
  *  ======== gpioButtonFxn0 ========
  *  Callback function for the GPIO interrupt on CONFIG_GPIO_BUTTON_0.
