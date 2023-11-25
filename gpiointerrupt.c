@@ -61,7 +61,7 @@ void timerCallback(Timer_Handle myHandle, int_fast16_t status)
 enum BL_States { BL_SMStart, BL_LedOff, BL_LedOn } BL_State;
 
 volatile unsigned char ticks = 0;
-void TickFct_Blink(unsigned char counts) {
+void TickFct_Blink(unsigned char counts, macro) {
 
 
 
@@ -71,7 +71,7 @@ void TickFct_Blink(unsigned char counts) {
          BL_State = BL_LedOff; //Initial state
          break;
       case BL_LedOff:
-         if (ticks == counts) {
+         if (ticks == 1) {
              ticks = 0;
              BL_State = BL_LedOn;
 
@@ -93,14 +93,14 @@ void TickFct_Blink(unsigned char counts) {
    switch (BL_State ) { //State actions
       case BL_LedOff:
 
-         GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_OFF);
+         GPIO_write(macro, CONFIG_GPIO_LED_OFF);
          ticks++;
 
          break;
 
       case BL_LedOn:
 
-         GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
+         GPIO_write(macro, CONFIG_GPIO_LED_ON);
          ticks++;
          break;
 
@@ -207,10 +207,11 @@ void *mainThread(void *arg0)
     while (1)
     {
 
+
         /* Initial SM state */
         BL_State = BL_SMStart;
         for (unsigned int i = 0; i <= 6; i++) {
-            TickFct_Blink(1);
+            TickFct_Blink(1, CONFIG_GPIO_LED_0);
 
             /* Wait 500 ms */
             while (!TimerFlag){}
@@ -218,10 +219,11 @@ void *mainThread(void *arg0)
         }
 
 
+
         /* Initial SM state */
         BL_State = BL_LedOn;
-        for (unsigned int j = 0; j <= 1; j++) {
-            TickFct_Blink(3);
+        for (unsigned int j = 0; j <= 10; j++) {
+            TickFct_Blink(3, CONFIG_GPIO_LED_1);
 
             /* Wait 500 ms */
             while (!TimerFlag){}
