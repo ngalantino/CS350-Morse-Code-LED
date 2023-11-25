@@ -202,15 +202,33 @@ void *mainThread(void *arg0)
     /* Initialize timer */
     initTimer();
 
-    /* Initial SM state */
-    BL_State = BL_SMStart;
+
 
     while (1)
     {
 
-        TickFct_Blink(1);
-        while (!TimerFlag){}
-        TimerFlag = 0;
+        /* Initial SM state */
+        BL_State = BL_SMStart;
+        for (unsigned int i = 0; i <= 6; i++) {
+            TickFct_Blink(1);
+
+            /* Wait 500 ms */
+            while (!TimerFlag){}
+            TimerFlag = 0;
+        }
+
+
+        /* Initial SM state */
+        BL_State = BL_LedOn;
+        for (unsigned int j = 0; j <= 1; j++) {
+            TickFct_Blink(3);
+
+            /* Wait 500 ms */
+            while (!TimerFlag){}
+            TimerFlag = 0;
+        }
+
+
 
     }
 
