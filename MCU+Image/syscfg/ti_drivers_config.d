@@ -15,6 +15,12 @@ syscfg/ti_drivers_config.o: syscfg/ti_drivers_config.c \
  C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/driverlib/rom_map.h \
  C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/driverlib/rom_patch.h \
  C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/driverlib/prcm.h \
+ C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/Timer.h \
+ C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/dpl/HwiP.h \
+ C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/dpl/SemaphoreP.h \
+ C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/inc/hw_memmap.h \
+ C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/inc/hw_ints.h \
+ C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/timer/TimerCC32XX.h \
  C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/Board.h
 
 C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/DeviceFamily.h:
@@ -44,5 +50,17 @@ C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/driverlib/rom_ma
 C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/driverlib/rom_patch.h:
 
 C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/driverlib/prcm.h:
+
+C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/Timer.h:
+
+C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/dpl/HwiP.h:
+
+C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/dpl/SemaphoreP.h:
+
+C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/inc/hw_memmap.h:
+
+C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/devices/cc32xx/inc/hw_ints.h:
+
+C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/timer/TimerCC32XX.h:
 
 C:/ti/simplelink_cc32xx_sdk_7_10_00_13/source/ti/drivers/Board.h:

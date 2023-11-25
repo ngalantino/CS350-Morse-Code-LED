@@ -61,6 +61,16 @@ extern const uint_least8_t GPIO_pinUpperBound;
 
 
 /*
+ *  ======== Timer ========
+ */
+
+extern const uint_least8_t                  CONFIG_TIMER_0_CONST;
+#define CONFIG_TIMER_0                      0
+extern const uint_least8_t                  CONFIG_TIMER_1_CONST;
+#define CONFIG_TIMER_1                      1
+#define CONFIG_TI_DRIVERS_TIMER_COUNT       2
+
+/*
  *  ======== Board_init ========
  *  Perform all required TI-Drivers initialization
  *

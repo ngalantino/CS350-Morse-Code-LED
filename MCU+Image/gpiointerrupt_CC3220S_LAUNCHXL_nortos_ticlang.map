@@ -1,7 +1,7 @@
 ******************************************************************************
             TI ARM Clang Linker PC v3.2.0                      
 ******************************************************************************
->> Linked Sat Nov 25 10:19:29 2023
+>> Linked Sat Nov 25 10:57:42 2023
 
 OUTPUT FILE NAME:   <gpiointerrupt_CC3220S_LAUNCHXL_nortos_ticlang.out>
 ENTRY POINT SYMBOL: "resetISR"  address: 2000e5b5

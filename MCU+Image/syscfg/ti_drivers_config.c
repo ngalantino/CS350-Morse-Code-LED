@@ -134,6 +134,62 @@ const PowerCC32XX_ConfigV1 PowerCC32XX_config = {
     .numPins                   = 31
 };
 
+/*
+ *  =============================== Timer ===============================
+ */
+
+#include <ti/drivers/Timer.h>
+#include <ti/devices/cc32xx/inc/hw_memmap.h>
+#include <ti/devices/cc32xx/inc/hw_ints.h>
+#include <ti/drivers/timer/TimerCC32XX.h>
+
+#define CONFIG_TIMER_COUNT 2
+
+/*
+ *  ======== timerCC32XXObjects ========
+ */
+TimerCC32XX_Object timerCC32XXObjects[CONFIG_TIMER_COUNT];
+
+/*
+ *  ======== timerCC32XXHWAttrs ========
+ */
+const TimerCC32XX_HWAttrs timerCC32XXHWAttrs[CONFIG_TIMER_COUNT] = {
+    /* CONFIG_TIMER_0 */
+    {
+        .baseAddress = TIMERA1_BASE,
+        .subTimer    = TimerCC32XX_timer32,
+        .intNum      = INT_TIMERA1A,
+        .intPriority = (~0)
+    },
+    /* CONFIG_TIMER_1 */
+    {
+        .baseAddress = TIMERA0_BASE,
+        .subTimer    = TimerCC32XX_timer16A,
+        .intNum      = INT_TIMERA0A,
+        .intPriority = (~0)
+    },
+};
+
+/*
+ *  ======== Timer_config ========
+ */
+const Timer_Config Timer_config[CONFIG_TIMER_COUNT] = {
+    /* CONFIG_TIMER_0 */
+    {
+        .object      = &timerCC32XXObjects[CONFIG_TIMER_0],
+        .hwAttrs     = &timerCC32XXHWAttrs[CONFIG_TIMER_0]
+    },
+    /* CONFIG_TIMER_1 */
+    {
+        .object      = &timerCC32XXObjects[CONFIG_TIMER_1],
+        .hwAttrs     = &timerCC32XXHWAttrs[CONFIG_TIMER_1]
+    },
+};
+
+const uint_least8_t CONFIG_TIMER_0_CONST = CONFIG_TIMER_0;
+const uint_least8_t CONFIG_TIMER_1_CONST = CONFIG_TIMER_1;
+const uint_least8_t Timer_count = CONFIG_TIMER_COUNT;
+
 #include <ti/drivers/power/PowerCC32XX.h>
 
 /*
