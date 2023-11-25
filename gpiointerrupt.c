@@ -53,24 +53,37 @@ volatile unsigned char TimerFlag = 0;
 /* Timer callback function */
 void timerCallback(Timer_Handle myHandle, int_fast16_t status)
 {
-    //GPIO_toggle(CONFIG_GPIO_LED_0);
+
     TimerFlag = 1;
 }
 
 /* State Machine */
 enum BL_States { BL_SMStart, BL_LedOff, BL_LedOn } BL_State;
 
+volatile unsigned char ticks = 0;
 void TickFct_Blink(unsigned char counts) {
+
+
 
    switch( BL_State ) { //Transitions
       case BL_SMStart:
+         ticks=0;
          BL_State = BL_LedOff; //Initial state
          break;
       case BL_LedOff:
-         BL_State = BL_LedOn;
+         if (ticks == counts) {
+             ticks = 0;
+             BL_State = BL_LedOn;
+
+         }
          break;
       case BL_LedOn:
-         BL_State = BL_LedOff;
+         if(counts == ticks)
+         {
+             ticks = 0;
+             BL_State = BL_LedOff;
+
+         }
          break;
       default:
          BL_State = BL_SMStart;
@@ -81,13 +94,14 @@ void TickFct_Blink(unsigned char counts) {
       case BL_LedOff:
 
          GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_OFF);
-         counts++;
+         ticks++;
+
          break;
 
       case BL_LedOn:
 
          GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
-         counts++;
+         ticks++;
          break;
 
       default:
