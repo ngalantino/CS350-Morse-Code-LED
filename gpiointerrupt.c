@@ -45,10 +45,54 @@
 /* Timer configuration */
 #include <ti/drivers/Timer.h>
 
+
+/* Timer ticks */
+volatile unsigned char TimerFlag = 0;
+
+
 /* Timer callback function */
 void timerCallback(Timer_Handle myHandle, int_fast16_t status)
 {
+    //GPIO_toggle(CONFIG_GPIO_LED_0);
+    TimerFlag = 1;
+}
 
+/* State Machine */
+enum BL_States { BL_SMStart, BL_LedOff, BL_LedOn } BL_State;
+
+void TickFct_Blink(unsigned char counts) {
+
+   switch( BL_State ) { //Transitions
+      case BL_SMStart:
+         BL_State = BL_LedOff; //Initial state
+         break;
+      case BL_LedOff:
+         BL_State = BL_LedOn;
+         break;
+      case BL_LedOn:
+         BL_State = BL_LedOff;
+         break;
+      default:
+         BL_State = BL_SMStart;
+         break;
+   }
+
+   switch (BL_State ) { //State actions
+      case BL_LedOff:
+
+         GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_OFF);
+         counts++;
+         break;
+
+      case BL_LedOn:
+
+         GPIO_write(CONFIG_GPIO_LED_0, CONFIG_GPIO_LED_ON);
+         counts++;
+         break;
+
+      default:
+         break;
+   }
 }
 
 /* Initialize Timer */
@@ -60,7 +104,7 @@ void initTimer(void)
     /* Initialize timer and set parameters */
     Timer_init();
     Timer_Params_init(&params);
-    params.period = 1000000;
+    params.period = 500000;
     params.periodUnits = Timer_PERIOD_US;
     params.timerMode = Timer_CONTINUOUS_CALLBACK;
     params.timerCallback = timerCallback;
@@ -139,6 +183,21 @@ void *mainThread(void *arg0)
         /* Install Button callback */
         GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);
         GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
+    }
+
+    /* Initialize timer */
+    initTimer();
+
+    /* Initial SM state */
+    BL_State = BL_SMStart;
+
+    while (1)
+    {
+
+        TickFct_Blink(1);
+        while (!TimerFlag){}
+        TimerFlag = 0;
+
     }
 
     return (NULL);
