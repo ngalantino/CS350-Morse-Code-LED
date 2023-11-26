@@ -49,6 +49,9 @@
 /* Timer ticks */
 volatile unsigned char TimerFlag = 0;
 
+/* Toggle Message */
+volatile char message = 1;
+
 
 /* Timer callback function */
 void timerCallback(Timer_Handle myHandle, int_fast16_t status)
@@ -144,10 +147,18 @@ void initTimer(void)
  *
  *  Note: GPIO interrupts are cleared prior to invoking callbacks.
  */
+
+/* Toggle output messages */
 void gpioButtonFxn0(uint_least8_t index)
 {
-    /* Toggle an LED */
-    GPIO_toggle(CONFIG_GPIO_LED_0);
+    if(message == 1) {
+        message = 2;
+    }
+
+    else {
+        message = 1;
+    }
+
 }
 
 /*
@@ -195,7 +206,7 @@ void *mainThread(void *arg0)
         GPIO_setConfig(CONFIG_GPIO_BUTTON_1, GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING);
 
         /* Install Button callback */
-        GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn1);
+        GPIO_setCallback(CONFIG_GPIO_BUTTON_1, gpioButtonFxn0);
         GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
     }
 
@@ -207,48 +218,111 @@ void *mainThread(void *arg0)
     while (1)
     {
 
-        /* S */
-        /* Initial SM state */
-        BL_State = BL_SMStart;
-        for (unsigned int i = 0; i <= 6; i++) {
-            TickFct_Blink(1, CONFIG_GPIO_LED_0);
+        if(message == 1) {
+            /* Disable interrupts for both buttons */
+            GPIO_disableInt(CONFIG_GPIO_BUTTON_0);
+            GPIO_disableInt(CONFIG_GPIO_BUTTON_1);
 
-            /* Wait 500 ms */
-            while (!TimerFlag){}
-            TimerFlag = 0;
+            /* S */
+            /* Initial SM state */
+            BL_State = BL_SMStart;
+            for (unsigned int i = 0; i <= 6; i++) {
+                TickFct_Blink(1, CONFIG_GPIO_LED_0);
+
+                /* Wait 500 ms */
+                while (!TimerFlag){}
+                TimerFlag = 0;
+            }
+
+
+            /* O */
+            /* Initial SM state */
+            BL_State = BL_LedOn;
+            for (unsigned int j = 0; j <= 10; j++) {
+                TickFct_Blink(3, CONFIG_GPIO_LED_1);
+
+                /* Wait 500 ms */
+                while (!TimerFlag){}
+                TimerFlag = 0;
+            }
+
+            /* S */
+            /* Initial SM state */
+            BL_State = BL_SMStart;
+            for (unsigned int i = 0; i <= 6; i++) {
+                TickFct_Blink(1, CONFIG_GPIO_LED_0);
+
+                /* Wait 500 ms */
+                while (!TimerFlag){}
+                TimerFlag = 0;
+            }
+
+            /* Pause 3500 ms */
+            for (unsigned int i = 0; i <= 6; i++) {
+                /* Wait 500 ms */
+                while (!TimerFlag){}
+                TimerFlag = 0;
+            }
+
+            /* Enable Interrupts */
+            GPIO_enableInt(CONFIG_GPIO_BUTTON_0);
+            GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
+
         }
 
+        if(message == 2) {
+            while (message == 2)
+                {
 
-        /* O */
-        /* Initial SM state */
-        BL_State = BL_LedOn;
-        for (unsigned int j = 0; j <= 10; j++) {
-            TickFct_Blink(3, CONFIG_GPIO_LED_1);
+                    /* Disable interrupts for both buttons */
+                    GPIO_disableInt(CONFIG_GPIO_BUTTON_0);
+                    GPIO_disableInt(CONFIG_GPIO_BUTTON_1);
 
-            /* Wait 500 ms */
-            while (!TimerFlag){}
-            TimerFlag = 0;
+                    /* O */
+                    /* Initial SM state */
+                    BL_State = BL_SMStart;
+                    for (unsigned int j = 0; j <= 4; j++) {
+                        TickFct_Blink(3, CONFIG_GPIO_LED_1);
+
+                        /* Wait 500 ms */
+                        while (!TimerFlag){}
+                        TimerFlag = 0;
+                    }
+
+                    /* S */
+                    /* Initial SM state */
+                    BL_State = BL_SMStart;
+                    for (unsigned int i = 0; i <= 2; i++) {
+                        TickFct_Blink(1, CONFIG_GPIO_LED_0);
+
+                        /* Wait 500 ms */
+                        while (!TimerFlag){}
+                        TimerFlag = 0;
+                    }
+
+                    BL_State = BL_SMStart;
+                    for (unsigned int j = 0; j <= 4; j++) {
+                        TickFct_Blink(3, CONFIG_GPIO_LED_1);
+
+                        /* Wait 500 ms */
+                        while (!TimerFlag){}
+                        TimerFlag = 0;
+                    }
+
+                    /* Pause 3500 ms */
+                    for (unsigned int i = 0; i <= 6; i++) {
+                        /* Wait 500 ms */
+                        while (!TimerFlag){}
+                        TimerFlag = 0;
+                    }
+
+                    /* Enable Interrupts */
+                    GPIO_enableInt(CONFIG_GPIO_BUTTON_0);
+                    GPIO_enableInt(CONFIG_GPIO_BUTTON_1);
+
+
+                }
         }
-
-        /* S */
-        /* Initial SM state */
-        BL_State = BL_SMStart;
-        for (unsigned int i = 0; i <= 6; i++) {
-            TickFct_Blink(1, CONFIG_GPIO_LED_0);
-
-            /* Wait 500 ms */
-            while (!TimerFlag){}
-            TimerFlag = 0;
-        }
-
-        /* Pause 3500 ms */
-        for (unsigned int i = 0; i <= 6; i++) {
-            /* Wait 500 ms */
-            while (!TimerFlag){}
-            TimerFlag = 0;
-        }
-
-
 
 
     }
